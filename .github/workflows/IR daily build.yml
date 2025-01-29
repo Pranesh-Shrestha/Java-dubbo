@@ -1,9 +1,7 @@
 name: Build PyPi Package For daily build
 on:
-  push:
-    branches: [ PROD-DAILY-BUILD ]
-  pull_request:
-    branches: [ PROD-DAILY-BUILD ]
+  schedule:
+    - cron: '15 2 * * *'  # Runs every day at 08:00 AM Nepal Time
 
 permissions:
   checks: write
