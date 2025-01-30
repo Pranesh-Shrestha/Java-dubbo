@@ -1,7 +1,8 @@
 name: Build PyPi Package For daily build
 on:
   schedule:
-    - cron: '15 2 * * *'  # Runs every day at 08:00 AM Nepal Time
+    - cron: '0 */12 * * *'  # Runs every 12 hours
+  workflow_dispatch:  # Allows manual triggering
 
 permissions:
   checks: write
