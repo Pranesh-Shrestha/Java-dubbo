@@ -2,7 +2,7 @@ name: Build PyPi Package For daily build
 on:
   workflow_dispatch:  # Allows manual triggering
   schedule:
-    - cron: '25 * * * *'  # Runs every 5 minutes
+    - cron: '0 12 * * *'  # Runs at 12
   
 permissions:
   checks: write
