@@ -95,3 +95,6 @@ jobs:
         
     - name: install dependencies
       run: mvn clean install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -fae -DskipTests
+
+    - name: Test curl to example.com
+      run: curl -I https://example.com
