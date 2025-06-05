@@ -20,6 +20,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'  # Change to match your project's Java version
 
-      - name: Build and show dependency tree (Maven)
+      - name: Download direct dependencies only
         run: |
-          mvn dependency:tree -Dincludes=com.google.guava:guava
+         mvn dependency:go-offline \
+          -DexcludeTransitive=true
