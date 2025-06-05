@@ -22,4 +22,4 @@ jobs:
 
       - name: Build and show dependency tree (Maven)
         run: |
-          mvn dependency:tree
+          mvn dependency:tree -Dincludes=org.apache.commons:commons-compress
