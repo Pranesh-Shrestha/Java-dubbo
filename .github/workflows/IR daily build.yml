@@ -27,8 +27,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'  # or '21' depending on your project
 
-      - name: Install dependencies
-        run: mvn clean install #-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -fae -DskipTests
+      - name: Download direct dependencies only
+        run: |
+          mvn dependency:go-offline \
+          -DexcludeTransitive=true
 
       - name: Cleanup PSE
         if: always()
