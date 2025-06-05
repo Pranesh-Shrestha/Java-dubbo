@@ -1,0 +1,25 @@
+name: Java Dependency Tree
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  dependency-tree:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'  # Change to match your project's Java version
+
+      - name: Build and show dependency tree (Maven)
+        run: |
+          mvn dependency:tree
