@@ -2,9 +2,9 @@ name: Java Dependency Tree
 
 on:
   push:
-    branches: [main]
+    branches: [PROD_CLEAN]
   pull_request:
-    branches: [main]
+    branches: [PROD_CLEAN]
 
 jobs:
   dependency-tree:
