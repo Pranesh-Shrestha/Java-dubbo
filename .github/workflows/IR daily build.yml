@@ -45,7 +45,7 @@ jobs:
    if: always()
    steps:
    - name: Gather Status
-     uses: invisirisk/pse-action@dev-test
+     uses: invisirisk/pse-action@latest
      with:
       api_url: "https://app.stage.invisirisk.com"
       app_token: ${{ secrets.IR_API_KEY_STAGE }}
